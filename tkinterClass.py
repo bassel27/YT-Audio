@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from scraping import *
+from threading import *
 
 class Tkinter:
     def __init__(self):
@@ -22,11 +23,13 @@ class Tkinter:
 
         def clickEnter():
             scraping = Scraping()
-            scraping.download(self.getLink())
+            thread = Thread(target = scraping.download, args = (self.getLink(),))
+            self.entryLink.delete(0, END) 
+            thread.start()
 
         buttonDownload = ttk.Button(frameInput, text = "Enter", command = clickEnter)
         buttonDownload.grid(row = 2, column = 0)
-    
+
     
 
     def endProgram(self):
