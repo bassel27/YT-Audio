@@ -1,4 +1,4 @@
 # YT-Audio
 A program to simply convert youtube videos to mp4 audio files and download them!
-![image](https://user-images.githubusercontent.com/40627412/155857034-68f80eed-9567-4451-9652-c71ab6f4f5b1.png)
 
+![YouTube](https://user-images.githubusercontent.com/40627412/155857194-ccb65463-81a3-447b-b71c-6329db4f742d.png)<img src="https://user-images.githubusercontent.com/40627412/155857194-ccb65463-81a3-447b-b71c-6329db4f742d.png" width="48">
