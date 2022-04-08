@@ -35,7 +35,7 @@ class Tkinter:
 
         def clickEnter():
             scraping = Scraping()
-            thread = Thread(target = scraping.download, args = (self.getLink(), self.getOption(),))
+            thread = Thread(target = scraping.download, args = (self.getLink(), self.getOption(), self.frameInput,))
             self.entryLink.delete(0, END) 
             thread.start()
             
