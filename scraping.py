@@ -3,6 +3,7 @@ from pytube import YouTube
 from pytube import Playlist
 from tkinter import *
 import os
+import re
 import arabic_reshaper
 from bidi.algorithm import get_display
 
@@ -35,6 +36,12 @@ class Scraping:
         stream.download(self.folder)
         self.verifyDownload(frameInput)
         
+    def downloadPlaylistAudio(link):
+        playlist = Playlist(link)
+        numberVideos = len(playlist.video_urls)
+        for video in playlist.videos:
+            stream = video.streams.get_audio_only()
+            stream.download()
 
     def verifyDownload(self, frameInput):
         if '.' in self.title:
@@ -47,11 +54,6 @@ class Scraping:
         except:
             print(self.title + ": Error")
 
-    def downloadPlaylistAudio(link):
-        playlist = Playlist(link)
-        numberVideos = len(playlist.video_urls)
-        for video in playlist.videos:
-            stream = video.streams.get_audio_only()
-            stream.download()
+    
 
 

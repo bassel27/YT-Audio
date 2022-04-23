@@ -17,14 +17,15 @@ class Tkinter:
         link = self.entryLink.get()
         return link
 
-    def createOptionMenuType(self):
-        self.optionVar = StringVar()
-        self.optionVar.set("YT-Audio") 
-        optionMenuType = ttk.OptionMenu(self.frameInput, self.optionVar, "YT-Audio", "Podcast", "Music")
+    def createOptionMenuType(frameInput):
+        optionVar = StringVar()
+        optionVar.set("YT-Audio") 
+        optionMenuType = ttk.OptionMenu(frameInput, optionVar, "YT-Audio", "Podcast", "Music")
         optionMenuType.grid(row = 3, column=0)
+        return optionVar
 
-    def getOption(self):
-        option = self.optionVar.get()
+    def getOption(optionVar):
+        option = optionVar.get()
         return option
 
     def createCheckButton(self):
@@ -47,16 +48,16 @@ class Tkinter:
         self.entryLink = ttk.Entry(self.frameInput)
         self.entryLink.grid(row = 1, column = 0, ipadx = 300)
 
-        self.createOptionMenuType()
+        optionVar = Tkinter.createOptionMenuType(self.frameInput)
         self.createCheckButton()
 
         def clickEnter():
             scraping = Scraping()
             if self.isChecked()==1:
-                Thread(target = scraping.downloadPlaylistAudio, args = (self.getLink(),)).start()
+                Thread(target = Scraping.downloadPlaylistAudio, args = (self.getLink(),)).start()
                 self.checkVar.set(0)
             else:
-                Thread(target = scraping.downloadAudio, args = (self.getLink(), self.getOption(), self.frameInput,)).start()
+                Thread(target = scraping.downloadAudio, args = (self.getLink(), Tkinter.getOption(optionVar), self.frameInput,)).start()
             self.entryLink.delete(0, END) 
             
             
