@@ -7,17 +7,18 @@ import re
 import arabic_reshaper
 from bidi.algorithm import get_display
 
+
 def formatArabicText(text):
-    text = arabic_reshaper.reshape(text)    #reshape text
+    text = arabic_reshaper.reshape(text)  # reshape text
     return get_display(text)
 
-class Scraping:
 
+class Scraping:
     def getFolder(option):
         if option == "YT-Audio":
             folder = r"This PC\Bassel's Note\Internal storage\Audiobooks\YT-Audio"
         elif option == "Music":
-            folder = r'E:\Music to Help Study'
+            folder = r"E:\Music to Help Study"
         elif option == "Podcast":
             folder = r"This PC\Bassel's Note\Internal storage\Audiobooks\Podcasts"
         return folder
@@ -35,25 +36,27 @@ class Scraping:
         self.folder = r"E:\Programming\YT-Audio"
         stream.download(self.folder)
         self.verifyDownload(frameInput)
-        
-    def downloadPlaylistAudio(link):
+
+    def downloadPlaylistAudio(self, link, option, frameInput):
         playlist = Playlist(link)
-        numberVideos = len(playlist.video_urls)
+        self.folder = r"E:\Programming\YT-Audio"
         for video in playlist.videos:
             stream = video.streams.get_audio_only()
             stream.download()
+            self.title = video.title
+            self.size = stream.filesize
+            self.verifyDownload(frameInput, True)
 
-    def verifyDownload(self, frameInput):
-        if '.' in self.title:
-            self.title = self.title.replace('.', '')
+    def verifyDownload(self, frameInput, isPlaylist=False):
+        if "." in self.title:
+            self.title = self.title.replace(".", "")
 
         try:
-            size = os.path.getsize(self.folder + '/' + self.title + '.mp4')
-            if(size == self.size):
-                Label(frameInput, text =  "✅ " + formatArabicText(self.title)).grid()
+            size = os.path.getsize(self.folder + "/" + self.title + ".mp4")
+            if size == self.size:
+                labelText = "✅ " + formatArabicText(self.title)
+                if isPlaylist:
+                    labelText += " (playlist)"
+                Label(frameInput, text=labelText).grid()
         except:
-            print(self.title + ": Error")
-
-    
-
-
+            Label(frameInput, text=self.title + ": Error")
