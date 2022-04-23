@@ -10,6 +10,7 @@ class Tkinter:
     def __init__(self):
         self.root = Tk()
         self.root.title(" YT Audio")
+        self.root.iconbitmap('icon.ico')
 
     def getLink(self):
         link = self.entryLink.get()
