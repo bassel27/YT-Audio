@@ -1,6 +1,3 @@
-from faulthandler import disable
-from os import link
-from tabnanny import check
 from tkinter import *
 from tkinter import ttk
 

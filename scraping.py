@@ -3,7 +3,6 @@ from pytube import YouTube
 from pytube import Playlist
 from tkinter import *
 import os
-import re
 import arabic_reshaper
 from bidi.algorithm import get_display
 
