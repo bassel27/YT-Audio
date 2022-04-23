@@ -1,8 +1,6 @@
 from tkinter.tix import COLUMN
 from pytube import YouTube
 from pytube import Playlist
-import re
-from tkinter import ttk
 from tkinter import *
 import os
 import arabic_reshaper
@@ -23,7 +21,7 @@ class Scraping:
             folder = r"This PC\Bassel's Note\Internal storage\Audiobooks\Podcasts"
         return folder
 
-    def download(self, link, option, frameInput):
+    def downloadAudio(self, link, option, frameInput):
         yt = YouTube(link)
         self.title = yt.title
         stream = yt.streams.get_audio_only()
@@ -49,20 +47,11 @@ class Scraping:
         except:
             print(self.title + ": Error")
 
+    def downloadPlaylistAudio(link):
+        playlist = Playlist(link)
+        numberVideos = len(playlist.video_urls)
+        for video in playlist.videos:
+            stream = video.streams.get_audio_only()
+            stream.download()
 
 
-
-
-
-
-# YOUTUBE_STREAM_AUDIO = '140' # modify the value to download a different stream
-# DOWNLOAD_DIR = r"E:\Programming\YT-Audio"
-# playlist = Playlist('https://www.youtube.com/playlist?list=PLzwWSJNcZTMSW-v1x6MhHFKkwrGaEgQ-L')
-
-# # this fixes the empty playlist.videos list
-# playlist._video_regex = re.compile(r"\"url\":\"(/watch\?v=[\w-]*)")
-
-# # physically downloading the audio track
-# for video in playlist.videos:
-#     audioStream = video.streams.get_by_itag(YOUTUBE_STREAM_AUDIO)
-#     audioStream.download(output_path=DOWNLOAD_DIR)

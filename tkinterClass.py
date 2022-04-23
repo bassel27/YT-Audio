@@ -1,5 +1,10 @@
+from faulthandler import disable
+from os import link
+from tabnanny import check
 from tkinter import *
 from tkinter import ttk
+
+from numpy import var
 from scraping import *
 from threading import *
 
@@ -16,11 +21,22 @@ class Tkinter:
         self.optionVar = StringVar()
         self.optionVar.set("YT-Audio") 
         optionMenuType = ttk.OptionMenu(self.frameInput, self.optionVar, "YT-Audio", "Podcast", "Music")
-        optionMenuType.grid(row = 2, column=0)
+        optionMenuType.grid(row = 3, column=0)
 
     def getOption(self):
         option = self.optionVar.get()
         return option
+
+    def createCheckButton(self):
+        self.checkVar = IntVar()
+        self.checkPlaylist = ttk.Checkbutton(self.frameInput, text = "Playlist?", variable=self.checkVar)
+        self.checkPlaylist.grid(row = 2, column = 0)
+    
+    def isChecked(self):
+        if self.checkVar.get() == 1:
+            return 1
+        else: 
+            return 0
 
     def frameInput(self):
         self.frameInput = Frame(self.root)    #ttk.frame(self.root)
@@ -32,19 +48,21 @@ class Tkinter:
         self.entryLink.grid(row = 1, column = 0, ipadx = 300)
 
         self.createOptionMenuType()
+        self.createCheckButton()
 
         def clickEnter():
             scraping = Scraping()
-            thread = Thread(target = scraping.download, args = (self.getLink(), self.getOption(), self.frameInput,))
+            if self.isChecked()==1:
+                Thread(target = scraping.downloadPlaylistAudio, args = (self.getLink(),)).start()
+                self.checkVar.set(0)
+            else:
+                Thread(target = scraping.downloadAudio, args = (self.getLink(), self.getOption(), self.frameInput,)).start()
             self.entryLink.delete(0, END) 
-            thread.start()
             
-
+            
+        
         buttonDownload = ttk.Button(self.frameInput, text = "Enter", command = clickEnter)
-        buttonDownload.grid(row = 3, column = 0)
-
-
-    
+        buttonDownload.grid(row = 4, column = 0)
 
     def endProgram(self):
         self.root.mainloop()
