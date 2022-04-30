@@ -1,10 +1,10 @@
-from tkinter.tix import COLUMN
 from pytube import YouTube
+import os
 from pytube import Playlist
 from tkinter import *
-import os
 import arabic_reshaper
 from bidi.algorithm import get_display
+from difflib import SequenceMatcher
 
 
 def formatArabicText(text):
@@ -31,14 +31,14 @@ class Scraping:
         # try:
         #     stream.download(self.folder)
         # except:
-        #     self.folder = r'E:\Programming\YT-Audio\tkinterClass.py'
-        self.folder = r"E:\Programming\YT-Audio"
+        #     self.folder = r'E:\Programming Projects\YT-Audio\tkinterClass.py'
+        self.folder = r"E:\Programming Projects\YT-Audio"
         stream.download(self.folder)
         self.verifyDownload(frameInput)
 
     def downloadPlaylistAudio(self, link, option, frameInput):
         playlist = Playlist(link)
-        self.folder = r"E:\Programming\YT-Audio"
+        self.folder = r"E:\Programming Projects\YT-Audio"
         for video in playlist.videos:
             stream = video.streams.get_audio_only()
             stream.download()
@@ -46,16 +46,29 @@ class Scraping:
             self.size = stream.filesize
             self.verifyDownload(frameInput, True)
 
-    def verifyDownload(self, frameInput, isPlaylist=False):
-        if "." in self.title:
-            self.title = self.title.replace(".", "")
+    def getSimilarity(self, fileName):
+        return SequenceMatcher(isjunk = None, a = self.title, b = fileName).ratio()
 
+    def getDownloadedFileName(self):
+        fileNames = os.listdir(r"E:\Programming Projects\YT-Audio") 
+        max = 0
+        for fileName in fileNames:
+            i = self.getSimilarity(fileName)
+            if max < i:
+                max = i
+                title = fileName
+        return title
+
+    def verifyDownload(self, frameInput, isPlaylist=False):
+        self.title = self.getDownloadedFileName()   # sometimes, the title is not the same as the file name (due to illegal characters), so we need to make the title same as the file name
         try:
-            size = os.path.getsize(self.folder + "/" + self.title + ".mp4")
+            size = os.path.getsize(self.folder + "/" + self.title)
             if size == self.size:
                 labelText = "✅ " + formatArabicText(self.title)
                 if isPlaylist:
                     labelText += " (playlist)"
                 Label(frameInput, text=labelText).grid()
+            else:
+                Label(frameInput, text=self.title + ": Error").grid()
         except:
-            Label(frameInput, text=self.title + ": Error")
+            Label(frameInput, text=self.title + ": Error").grid()

@@ -6,4 +6,4 @@ scraping = Scraping()
 
 tkinter.frameInput()
 
-tkinter.endProgram()  
+tkinter.endProgram()   

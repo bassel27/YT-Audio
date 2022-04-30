@@ -1,7 +1,5 @@
 from tkinter import *
 from tkinter import ttk
-
-from numpy import var
 from scraping import *
 from threading import *
 
@@ -9,8 +7,8 @@ from threading import *
 class Tkinter:
     def __init__(self):
         self.root = Tk()
-        self.root.title(" YT Audio")
-        self.root.iconbitmap('icon.ico')
+        self.root.title(" YT-Audio")
+        self.root.iconbitmap("E:\Programming Projects\YT-Audio\Icon.ico")
 
     def getLink(self):
         link = self.entryLink.get()
