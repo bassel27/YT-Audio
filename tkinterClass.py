@@ -1,7 +1,8 @@
 from tkinter import *
 from tkinter import ttk
-from scraping import *
 from threading import *
+
+from scraping import *
 
 
 class Tkinter:
@@ -71,7 +72,9 @@ class Tkinter:
                 ).start()
             self.entryLink.delete(0, END)
 
-        buttonDownload = ttk.Button(self.frameInput, text="Download", command=clickEnter)
+        buttonDownload = ttk.Button(
+            self.frameInput, text="Download", command=clickEnter
+        )
         buttonDownload.grid(row=4, column=0)
 
     def endProgram(self):
