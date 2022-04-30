@@ -47,7 +47,7 @@ class Tkinter:
         Label(self.frameInput, text="Enter youtube link").grid(row=0, column=0)
 
         self.entryLink = ttk.Entry(self.frameInput)
-        self.entryLink.grid(row=1, column=0, ipadx=300)
+        self.entryLink.grid(row=1, column=0, ipadx=150)
 
         optionVar = Tkinter.createOptionMenuType(self.frameInput)
         self.createCheckButton()
@@ -71,7 +71,7 @@ class Tkinter:
                 ).start()
             self.entryLink.delete(0, END)
 
-        buttonDownload = ttk.Button(self.frameInput, text="Enter", command=clickEnter)
+        buttonDownload = ttk.Button(self.frameInput, text="Download", command=clickEnter)
         buttonDownload.grid(row=4, column=0)
 
     def endProgram(self):
