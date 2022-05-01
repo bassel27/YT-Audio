@@ -5,28 +5,21 @@ from tkinter import *
 import arabic_reshaper
 from bidi.algorithm import get_display
 from difflib import SequenceMatcher
-
+from Video import Video
 
 def formatArabicText(text):
     text = arabic_reshaper.reshape(text)  # reshape text
     return get_display(text)
 
 
-class Scraping:
-    def getFolder(option):
-        if option == "YT-Audio":
-            folder = r"This PC\Bassel's Note\Internal storage\Audiobooks\YT-Audio"
-        elif option == "Music":
-            folder = r"E:\Music to Help Study"
-        elif option == "Podcast":
-            folder = r"This PC\Bassel's Note\Internal storage\Audiobooks\Podcasts"
-        return folder
+class Scraping(Video):
+
+
 
     def downloadAudio(self, link, option, frameInput):
         yt = YouTube(link)
-        self.title = yt.title
         stream = yt.streams.get_audio_only()
-        self.size = stream.filesize
+        self.initializeAttributes(yt.title, link, stream.filesize)
         # self.folder = Scraping.getFolder(option)
         # try:
         #     stream.download(self.folder)
@@ -38,29 +31,44 @@ class Scraping:
 
     def downloadPlaylistAudio(self, link, option, frameInput):
         playlist = Playlist(link)
-        self.folder = r"E:\Programming Projects\YT-Audio"
+        playlistTitle = playlist.title
+        try:    #make a playlist directory
+            os.makedirs("E:\Programming Projects\YT-Audio" + "/" + playlist.title)
+        except: 
+            pass
+        self.folder = "E:\Programming Projects\YT-Audio" + "/" + self.getPlaylistFolderName(playlistTitle)
         for video in playlist.videos:
             stream = video.streams.get_audio_only()
-            stream.download()
+            stream.download(self.folder)
             self.title = video.title
             self.size = stream.filesize
             self.verifyDownload(frameInput, True)
 
-    def getSimilarity(self, fileName):
-        return SequenceMatcher(isjunk = None, a = self.title, b = fileName).ratio()
+    def getSimilarity(self, a, b):
+        return SequenceMatcher( None, a , b).ratio()
 
-    def getDownloadedFileName(self):
-        fileNames = os.listdir(r"E:\Programming Projects\YT-Audio") 
+    def getFileName(self):
+        fileNames = os.listdir(self.folder) 
         max = 0
         for fileName in fileNames:
-            i = self.getSimilarity(fileName)
+            i = self.getSimilarity(self.title, fileName)
+            if max < i:
+                max = i
+                title = fileName
+        return title
+
+    def getPlaylistFolderName(self, playlistTitle):
+        fileNames = os.listdir("E:\Programming Projects\YT-Audio") 
+        max = 0
+        for fileName in fileNames:
+            i = self.getSimilarity(playlistTitle, fileName)
             if max < i:
                 max = i
                 title = fileName
         return title
 
     def verifyDownload(self, frameInput, isPlaylist=False):
-        self.title = self.getDownloadedFileName()   # sometimes, the title is not the same as the file name (due to illegal characters), so we need to make the title same as the file name
+        self.title = self.getFileName()   # sometimes, the title is not the same as the file name (due to illegal characters), so we need to make the title same as the file name
         try:
             size = os.path.getsize(self.folder + "/" + self.title)
             if size == self.size:
@@ -72,3 +80,13 @@ class Scraping:
                 Label(frameInput, text=self.title + ": Error").grid()
         except:
             Label(frameInput, text=self.title + ": Error").grid()
+
+
+
+    def setFolder(self, option):
+        if option == "YT-Audio":
+            self.folder = r"This PC\Bassel's Note\Internal storage\Audiobooks\YT-Audio"
+        elif option == "Music":
+            self.folder = r"E:\Music to Help Study"
+        elif option == "Podcast":
+            self.folder = r"This PC\Bassel's Note\Internal storage\Audiobooks\Podcasts"

@@ -35,7 +35,7 @@ class Tkinter:
         )
         self.checkPlaylist.grid(row=2, column=0)
 
-    def isChecked(self):
+    def isPlaylistChecked(self):
         if self.checkVar.get() == 1:
             return 1
         else:
@@ -48,14 +48,14 @@ class Tkinter:
         Label(self.frameInput, text="Enter youtube link").grid(row=0, column=0)
 
         self.entryLink = ttk.Entry(self.frameInput)
-        self.entryLink.grid(row=1, column=0, ipadx=170)
+        self.entryLink.grid(row=1, column=0, ipadx=240)
 
         optionVar = Tkinter.createOptionMenuType(self.frameInput)
         self.createCheckButton()
 
         def clickEnter():
             scraping = Scraping()
-            if self.isChecked() == 1:
+            if self.isPlaylistChecked() == 1:
                 Thread(
                     target=scraping.downloadPlaylistAudio,
                     args=(self.getLink(), optionVar, self.frameInput),
