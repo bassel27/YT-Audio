@@ -10,3 +10,4 @@ I am a long-distance daily commuter, so I wanted to make use of that wasted time
 This program uses multithreading so that you can enter more videos to download while other videos are being downloaded.
 ### 2. Verification
 This program verifies the download of the audio files by showing a tick (✅) beside the successfully downloaded files.
+### 3. Download Complete Playlists
