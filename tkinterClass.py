@@ -48,7 +48,7 @@ class Tkinter:
         Label(self.frameInput, text="Enter youtube link").grid(row=0, column=0)
 
         self.entryLink = ttk.Entry(self.frameInput)
-        self.entryLink.grid(row=1, column=0, ipadx=150)
+        self.entryLink.grid(row=1, column=0, ipadx=170)
 
         optionVar = Tkinter.createOptionMenuType(self.frameInput)
         self.createCheckButton()
