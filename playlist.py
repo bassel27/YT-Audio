@@ -1,5 +1,6 @@
 
 
 class Playlist:
-    def setPlaylistTitle(self, title, link):
-        pass
+    def setPlaylistAttributes(self, title, link):
+        self.playlistTitle = title
+        self.playlistLink = link
